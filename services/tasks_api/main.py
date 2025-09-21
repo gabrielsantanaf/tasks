@@ -5,7 +5,7 @@ from mangum import Mangum
 app = FastAPI()
 app.add_middleware(
     CORSMiddleware,
-    allow_origins="*",
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -16,4 +16,5 @@ app.add_middleware(
 def health_check():
     return {"message": "OK"}
 
-handle = Mangum(app) 
+
+handle = Mangum(app)
