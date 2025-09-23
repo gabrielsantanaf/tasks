@@ -40,6 +40,13 @@ functions:
           cors:
             origin: ${env:ALLOWED_ORIGINS}
             maxAge: 60
+          authorizer:  # new
+            name: TasksAPIAuthorizer  # new
+            type: COGNITO_USER_POOLS  # new
+            arn:  # new
+              Fn::GetAtt:  # new
+                - CognitoUserPool  # new
+                - Arn  # new
 
 
 custom:
