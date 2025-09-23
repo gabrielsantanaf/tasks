@@ -48,38 +48,7 @@ class TaskStore:
             status=TaskStatus(item["status"]),
         )
 
-    def list_open(self, owner):
-        dynamodb = boto3.resource("dynamodb", region_name="eu-west-1")
-        table = dynamodb.Table(self.table_name)
-        last_key = None
-        query_kwargs = {
-            "IndexName": "GS1",
-            "KeyConditionExpression": Key("GS1PK").eq(
-                f"#{owner}#{TaskStatus.OPEN.value}"
-            ),
-        }
-        tasks = []
-        while True:
-            if last_key is not None:
-                query_kwargs["ExclusiveStartKey"] = last_key
-            response = table.query(**query_kwargs)
-            tasks.extend(
-                [
-                    Task(
-                        id=UUID(record["id"]),
-                        title=record["title"],
-                        owner=record["owner"],
-                        status=TaskStatus(record["status"]),
-                    )
-                    for record in response["Items"]
-                ]
-            )
-            last_key = response.get("LastEvaluatedKey")
-            if last_key is None:
-                break
-
-        return tasks
-
+        
     def list_open(self, owner):
         return self._list_by_status(owner, TaskStatus.OPEN)
 
