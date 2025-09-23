@@ -48,7 +48,6 @@ class TaskStore:
             status=TaskStatus(item["status"]),
         )
 
-        
     def list_open(self, owner):
         return self._list_by_status(owner, TaskStatus.OPEN)
 
