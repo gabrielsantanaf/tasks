@@ -1,7 +1,9 @@
 import datetime
+from uuid import UUID
+
 import boto3
 from boto3.dynamodb.conditions import Key
-from uuid import UUID
+
 from models import Task, TaskStatus
 
 
