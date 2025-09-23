@@ -11,7 +11,7 @@ provider:
   logRetentionInDays: 90
   environment:
     APP_ENVIRONMENT: ${self:provider.stage}
-  iam:  # new
+  iam:  
     role:
       statements:
         - Effect: Allow
@@ -48,11 +48,12 @@ custom:
     noDeploy:
       - boto3  # already on Lambda
       - botocore  # already on Lambda
-  stage: ${opt:stage, self:provider.stage}  # new
-  tableName: ${self:custom.stage}-tasks-api  # new
+  stage: ${opt:stage, self:provider.stage}
+  tableName: ${self:custom.stage}-tasks-api  
 
 plugins:
   - serverless-python-requirements
 
 resources:
-  - ${file(resources/dynamodb.yml)}  # new
+  - ${file(resources/cognito.yml)}  
+  - ${file(resources/dynamodb.yml)}
