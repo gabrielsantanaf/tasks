@@ -12,6 +12,8 @@ uvicorn = ">=0.36.0,<0.37.0"
 httpx = ">=0.28.1,<0.29.0"
 mangum = ">=0.19.0,<0.20.0"
 boto3 = "^1.40.35"
+pyjwt = "^2.10.1"
+pydantic-settings = "^2.10.1"
 
 [tool.poetry.group.dev.dependencies]
 pytest = ">=8.4.2,<9.0.0"
