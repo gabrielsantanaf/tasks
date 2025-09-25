@@ -1,4 +1,4 @@
-service: tasks-ui
+service: tasks-ui-frontend
 
 useDotenv: true
 
