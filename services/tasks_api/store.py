@@ -1,4 +1,5 @@
-import datetime
+import os
+from datetime import datetime, timezone
 from uuid import UUID
 
 import boto3
@@ -8,18 +9,25 @@ from models import Task, TaskStatus
 
 
 class TaskStore:
-    def __init__(self, table_name):
+    def __init__(self, table_name, dynamodb_url=None):
         self.table_name = table_name
+        self.dynamodb_url = dynamodb_url
+        self.region_name = os.getenv("AWS_REGION", "us-east-1")
+
+    def _get_dynamodb_resource(self):
+        return boto3.resource(
+            "dynamodb", region_name=self.region_name, endpoint_url=self.dynamodb_url
+        )
 
     def add(self, task):
-        dynamodb = boto3.resource("dynamodb", region_name="eu-west-1")
+        dynamodb = self._get_dynamodb_resource()
         table = dynamodb.Table(self.table_name)
         table.put_item(
             Item={
                 "PK": f"#{task.owner}",
                 "SK": f"#{task.id}",
                 "GS1PK": f"#{task.owner}#{task.status.value}",
-                "GS1SK": f"#{datetime.datetime.utcnow().isoformat()}",
+                "GS1SK": f"#{datetime.now(timezone.utc).isoformat()}",
                 "id": str(task.id),
                 "title": task.title,
                 "status": task.status.value,
@@ -28,7 +36,7 @@ class TaskStore:
         )
 
     def get_by_id(self, task_id, owner):
-        dynamodb = boto3.resource("dynamodb", region_name="eu-west-1")
+        dynamodb = self._get_dynamodb_resource()
         table = dynamodb.Table(self.table_name)
         record = table.get_item(
             Key={
@@ -55,7 +63,7 @@ class TaskStore:
         return self._list_by_status(owner, TaskStatus.CLOSED)
 
     def _list_by_status(self, owner, status):
-        dynamodb = boto3.resource("dynamodb", region_name="eu-west-1")
+        dynamodb = self._get_dynamodb_resource()
         table = dynamodb.Table(self.table_name)
         last_key = None
         query_kwargs = {

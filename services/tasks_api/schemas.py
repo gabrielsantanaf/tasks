@@ -28,4 +28,3 @@ class APITaskList(BaseModel):
 
 class CloseTask(BaseModel):
     id: UUID
-    

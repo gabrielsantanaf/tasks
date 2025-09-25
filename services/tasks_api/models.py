@@ -18,16 +18,16 @@ class Task:
     @classmethod
     def create(cls, id_, title, owner):
         return cls(id_, title, TaskStatus.OPEN, owner)
-    
-    
-    def close(self): 
-        self.status = TaskStatus.CLOSED  
-    
+
+    def close(self):
+        self.status = TaskStatus.CLOSED
 
     def to_dict(self):
         return {
             "id": self.id,
             "title": self.title,
-            "status": self.status.value if hasattr(self.status, 'value') else self.status,
-            "owner": self.owner
+            "status": (
+                self.status.value if hasattr(self.status, "value") else self.status
+            ),
+            "owner": self.owner,
         }
