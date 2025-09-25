@@ -1,11 +1,9 @@
 import os
 import uuid
-from unittest.mock import MagicMock, patch
 
 import jwt
 import pytest
 from fastapi import status
-from moto import mock_aws
 from starlette.testclient import TestClient
 
 from main import app, get_task_store
