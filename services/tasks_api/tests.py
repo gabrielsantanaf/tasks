@@ -11,7 +11,6 @@ from starlette.testclient import TestClient
 from main import app, get_task_store
 from models import Task, TaskStatus
 
-
 # Configurar variáveis de ambiente para testes
 os.environ["AWS_DEFAULT_REGION"] = "eu-west-1"
 os.environ["AWS_ACCESS_KEY_ID"] = "testing"
